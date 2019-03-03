@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 from os import getenv
 
-load_dotenv(verbose=True, dotenv_path=Path('.') / '.env')
+load_dotenv(verbose=True)
 
 
 class Config:

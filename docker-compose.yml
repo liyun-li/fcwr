@@ -1,0 +1,11 @@
+version: '3'
+services:
+    app:
+        container_name: fcwr
+        restart: always
+        build: .
+        volumes:
+            - ./server:/fcwr
+        ports:
+            - 3000:3000
+        command: python serve.py
