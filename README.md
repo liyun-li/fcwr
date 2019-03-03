@@ -7,9 +7,9 @@ Offline Matchmaker
 To deploy:
 
 ```
+pip install -r requirements.txt
 cd server
 echo DEVELOPMENT_MODE=yes > .env
-pip install -r requirements.txt
 python serve.py
 ```
 
