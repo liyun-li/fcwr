@@ -8,7 +8,7 @@ To deploy:
 
 ```
 cd server
-cat DEVELOPMENT_MODE=yes > .env
+echo DEVELOPMENT_MODE=yes > .env
 pip install -r requirements.txt
 python serve.py
 ```
