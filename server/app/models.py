@@ -1,28 +1,15 @@
-from sqlalchemy import (
-    Column, Integer, String, ForeignKey, Float, Boolean, BigInteger,
-    CheckConstraint as CC, UniqueConstraint as UC
-)
+from sqlalchemy import Column, String, CheckConstraint as CC
 from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-from time import time
 
 db = SQLAlchemy()
-ma = Marshmallow()
 
 
-class Account(db.Model):
+class User(db.Model):
     __tablename__ = 'user'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    email = Column(String(255), nullable=False, unique=True)
-    username = Column(String(32), nullable=False, unique=True)
-    first = Column(String(32), nullable=False)
-    last = Column(String(32), nullable=False)
-    password = Column(String(72), nullable=False)
+    open_id = Column(String(255), primary_key=True)
+    gender = Column(String(1))
 
     __table_args__ = (
-        CC('length(password) > 50'),
+        CC('gender = "M" or gender = "F"'),
     )
-
-    def __repr__(self):
-        return 'User {}: {} {}'.format(self.username, self.last, self.first)
