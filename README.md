@@ -2,6 +2,12 @@
 
 Offline Matchmaker
 
+## Dependencies
+
+* Python 3
+* PIP
+* (Optional) Docker and Docker Compose
+
 ## Usage
 
 To deploy:
@@ -13,7 +19,7 @@ echo DEVELOPMENT_MODE=yes > .env
 python serve.py
 ```
 
-Or use Docker Compose
+Or use Docker Compose:
 
 ```
 docker-compose up
