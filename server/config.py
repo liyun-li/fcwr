@@ -30,3 +30,6 @@ class Config:
 
     # track DB mod
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+    # template autoreload
+    TEMPLATES_AUTO_RELOAD = True
