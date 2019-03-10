@@ -1,14 +1,35 @@
-<!doctype html>
-<html>
-	<head>
-		<title>If You Are The One</title>
-		<link rel="stylesheet" type="text/css"
-		   href="{{ url_for('static', filename='css/index.css') }}">
-	</head>
-	<body>
-		<h1>Hello world</h1>
+{% extends 'base.html' %}
 
-		<script src="{{ url_for('static', filename='js/index.js') }}">
-		</script>
-	</body>
-</html>
+{# CSS #}
+{% block links %}
+
+<link rel="stylesheet" type="text/css"
+   href="{{ url_for('static', filename='css/index.css') }}">
+
+{% endblock %}
+
+{# Site content #}
+{% block content %}
+
+{# display error if there is any #}
+{% if error %}
+
+<div class="alert alert-danger">
+	<strong>ERROR: </strong>{{ error }}
+</div>
+
+{% endif %}
+
+{# Do async stuff #}
+<div id="waitlist"></div>
+
+
+{% endblock %}
+
+{# JavaScripts #}
+{% block scripts %}
+
+<script defer src="{{ url_for('static', filename='js/index.js') }}">
+</script>
+
+{% endblock %}
