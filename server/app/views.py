@@ -17,9 +17,16 @@ def safer_commit(session):
     finally:
         return False
 
+def render_user_profile(open_id):
+    user = User.query.filter_by(open_id=open_id).first()
+    # if user.status == UserStatus.NonSex:
+    return "test"
 
 @views.route('/', methods=['GET'])
 def index():
+    if 'open_id' in session:
+        return render_user_profile(session['open_id'])
+
     open_id = request.args.get('open_id')
     if open_id:
         user = User.query.filter_by(open_id=open_id).first()
