@@ -20,12 +20,8 @@
 
 {% endif %}
 
-
-Your gender is {{ gender }}
-
 {# Do async stuff #}
 <div id="waitlist"></div>
-
 
 {% endblock %}
 
@@ -34,5 +30,6 @@ Your gender is {{ gender }}
 
 <script defer src="{{ url_for('static', filename='js/index.js') }}">
 </script>
+
 
 {% endblock %}
