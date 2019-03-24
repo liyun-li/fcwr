@@ -4,6 +4,7 @@ def create_app():
     from app.views import views
 
     app = Flask(__name__)
+    app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
     # configure
     app.config.from_object('config.Config')

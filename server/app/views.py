@@ -6,7 +6,6 @@ from app.models import db, User
 
 views = Blueprint('views', __name__)
 
-
 def safer_commit(session):
     try:
         session.commit()
@@ -22,6 +21,7 @@ def safer_commit(session):
 def index():
     open_id = request.args.get('open_id')
     if open_id:
+        session['open_id'] = open_id
         user = User.query.filter_by(open_id=open_id).first()
         gender = 'M'
         if not user:
@@ -43,8 +43,21 @@ def tutorial():
     print(2)
     return 'ok'
 
+@views.route('/selfsex', methods=['POST'])
+def selfsex():
+    user = User.query.filter_by(open_id=open_id).first()
+    gender = reuqest.args.get('selfsex')
+    return ''
 
 @views.route('/interest', methods=['POST'])
 def interest():
     gender = reuqest.args.get('interest')
     return ''
+
+
+# Test the session
+@views.route('/hello', methods=['GET'])
+def hello():
+    if 'open_id' in session:
+        return 'you have logged in'
+    return 'you have NOT logged in'
