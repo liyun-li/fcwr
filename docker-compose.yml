@@ -8,4 +8,4 @@ services:
             - ./server:/fcwr
         ports:
             - 3000:3000
-        command: sh -c "export FLASK_DEBUG=1 && python serve.py"
+        command: python serve.py
