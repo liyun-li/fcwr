@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'components/buttons.html' import icon %}
 
 {# CSS #}
 {% block links %}
@@ -14,17 +15,32 @@
 {# display error if there is any #}
 {% if error %}
 
-<div class="alert alert-danger">
+<div class="alert alert-danger text-center">
 	<strong>ERROR: </strong>{{ error }}
 </div>
 
 {% endif %}
 
-
-Your gender is {{ gender }}
+{# user has filled out interest #}
+{% if has_interest %}
 
 {# Do async stuff #}
 <div id="waitlist"></div>
+
+{% else %}
+
+<div id="gender" class="text-center">
+	<h2>What's your gender?</h2>
+	{{ icon('Female_Icon_2.png') }}
+	{{ icon('Male_Icon_2.png') }}
+</div>
+<div id="interest" class="text-center">
+	<h2>What's your preference?</h2>
+	{{ icon('Male_Icon_2.png') }}
+	{{ icon('Female_Icon_2.png') }}
+</div>
+
+{% endif %}
 
 
 {% endblock %}
