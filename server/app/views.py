@@ -17,11 +17,18 @@ def safer_commit(session):
     # finally:
     #     return False
 
-def render_user_profile(open_id):
+def get_user(open_id):
     users = User.query.filter_by(open_id=open_id)
     if not users:
+        return null
+    else:
+        return users.first()
+
+def render_user_profile(open_id):
+    user = get_user(open_id)
+    if not user:
         return "user not find"
-    user = users.first()
+
     if user.status == UserStatus.NonSex:
         return "please select sex and liked sex"
     elif user.status == UserStatus.Waiting:
@@ -42,18 +49,20 @@ def index():
         error = 'You must view this page with WeChat.'
         return render_template('index.html', error=error)
     else:
-        db.create_all()
-        user = User(open_id=str(open_id), gender='M', like_gender='M', status=UserStatus.NonSex)
-        print (user.open_id)
-        print (user.gender)
-        print (user.like_gender)
-        print (user.status)
+        user = get_user(open_id)
 
-        db.session.add(user)
+        if not user:
+            user = User(open_id=str(open_id), status=UserStatus.NonSex)
+            print (user.open_id)
+            print (user.gender)
+            print (user.like_gender)
+            print (user.status)
 
-        if not safer_commit(db.session):
-            error = 'Something went wong. Please contact staff.'
-            return render_template('index.html', error=error)
+            db.session.add(user)
+
+            if not safer_commit(db.session):
+                error = 'Something went wong. Please contact staff.'
+                return render_template('index.html', error=error)
 
         session['open_id'] = open_id
         return render_user_profile(open_id)
