@@ -58,6 +58,6 @@ def interest():
 @views.route('/hello', methods=['GET'])
 def hello():
     if 'open_id' in session:
-        print session['open_id']
+        print(session['open_id'])
         return 'you have logged in'
     return 'you have NOT logged in'
