@@ -23,6 +23,7 @@ def index():
     open_id = request.args.get('open_id')
     if open_id:
         user = User.query.filter_by(open_id=open_id).first()
+        gender = 'M'
         if not user:
             user = User(open_id=open_id, gender=gender)
             db.session.add(user)
@@ -31,7 +32,7 @@ def index():
                 error = 'Something went wong. Please contact staff.'
                 return render_template('index.html', error=error)
 
-        return render_template('index.html')
+        return render_template('index.html', gender=gender)
 
     error = 'You must view this page with WeChat.'
     return render_template('index.html', error=error)
@@ -39,6 +40,7 @@ def index():
 
 @views.route('/tutorial', methods=['GET'])
 def tutorial():
+    print(2)
     return 'ok'
 
 
@@ -46,3 +48,9 @@ def tutorial():
 def status():
     open_id = request.args.get('open_id')
     return 'ok'
+
+
+@views.route('/interest', methods=['POST'])
+def interest():
+    gender = reuqest.args.get('interest')
+    return ''
