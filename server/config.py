@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
+from redis import Redis
 from os import getenv
 
 load_dotenv(verbose=True)
