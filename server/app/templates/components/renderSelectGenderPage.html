@@ -1,57 +1,106 @@
-<div class="page-container">
-        <form method="post" action="" >
-        <div class="text-center text-large text__red" role="alert">
-                <strong>Select your gender</strong>
 
-                <div class="container">
-                        <div class="row">
-                          <div class="col">
-                                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" style="display: none;" >
-                                <label  for="exampleRadios1" style="color:red;">
-                                  <img src="{{url_for('static',filename='icons/Male_Icon_2.png')}}"class="img-thumbnail selectGender-image change-opacity">
-                                </label>
-                          </div>
-                          <div class="col">
-                    
-                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option1" style="display: none;"  >
-                <label  for="exampleRadios2" style="color:red;">
-                        <img src="{{url_for('static',filename='icons/Female_Icon_2.png')}}"class="img-thumbnail selectGender-image">
-                </label>
-                          </div>
+{% macro renderSelectGenderPage() %}
+
+        <!--
+                1. put api in action 
+                2. two radio button names: gender, genderPreference
+        -->
+
+        <div class="page-container" style="color:black;">
+                <form method="post" action="" >
+
+                        <div class="text-center text-large" role="alert">
+                                <strong>Select your gender</strong>
+                                <div class="container">
+                                <div class="row">
+
+                                        <div class="col">
+                                                <input class="form-check-input" type="radio" name="gender" id="genderMale" value="male" style="display: none;" >
+                                                <label for="genderMale">
+                                                        <img src="{{url_for('static',filename='icons/Male_Icon_2.png')}}" id="genderMaleImage" class="img-thumbnail selectGender-image change-opacity">
+                                                        <h2>汉子</h2>
+                                                </label>
+                                        </div>
+
+                                        <div class="col">
+                                                <input class="form-check-input" type="radio" name="gender" id="genderFemale" value="female" style="display: none;"  >
+                                                <label for="genderFemale">
+                                                        <img src="{{url_for('static',filename='icons/Female_Icon_2.png')}}" id="genderFemaleMaleImage" class="img-thumbnail selectGender-image">
+                                                        <h2>妹子</h2>
+                                                </label>
+                                        </div>
+
+                                        <script>
+                                                var genderMaleImage = document.getElementById("genderMaleImage")
+                                                var genderFemaleImage = document.getElementById("genderFemaleMaleImage")
+
+                                                var className = "change-opacity"
+
+                                                genderMaleImage.addEventListener("click",()=>{
+                                                        genderMaleImage.classList.remove("change-opacity")
+                                                        genderFemaleImage.classList.add(className)
+                                                })
+
+                                                genderFemaleImage.addEventListener("click",()=>{
+                                                        genderMaleImage.classList.add("change-opacity")
+                                                        genderFemaleImage.classList.remove(className)
+                                                   
+                                                })
+                                        </script>
+
+                                </div>
+                                </div>
                         </div>
-                        
-                      </div>
+
+                        <div class="text-center text-large" role="alert">
+                                        <strong>Select your preferred gender</strong>
+                                        <div class="container">
+                                        <div class="row">
                 
+                                                <div class="col">
+                                                        <input class="form-check-input" type="radio" name="genderPreference" id="genderPreferenceMale" value="male" style="display: none;" >
+                                                        <label for="genderPreferenceMale" >
+                                                                <img src="{{url_for('static',filename='icons/Male_Icon_2.png')}}" id="genderPreferenceMaleImage" class="img-thumbnail selectGender-image change-opacity">
+                                                                <h2>汉子</h2>
+                                                        </label>
+                                                </div>
+                
+                                                <div class="col">
+                                                        <input class="form-check-input" type="radio" name="genderPreference" id="genderPreferenceFemale" value="value" style="display: none;"  >
+                                                        <label  for="genderPreferenceFemale" >
+                                                                <img src="{{url_for('static',filename='icons/Female_Icon_2.png')}}" id="genderPreferenceFemaleImage" class="img-thumbnail selectGender-image">
+                                                                <h2>妹子</h2>
+                                                        </label>
+                                                </div>
 
-            </div>
-
-            <div class="text-center text-large text__red" role="alert">
-                    <strong>Select your preferred gender</strong>
-
-                    <div class="container">
-                        <div class="row">
-                              <div class="col">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" style="display: none;" >
-                                    <label  for="exampleRadios1" style="color:red;">
-                                      <img src="{{url_for('static',filename='icons/Male_Icon_2.png')}}"class="img-thumbnail selectGender-image change-opacity">
-                                    </label>
+                                                <script>
+                                                        var genderPreferenceMaleImage = document.getElementById("genderPreferenceMaleImage")
+                                                        var genderPreferenceFemaleImage = document.getElementById("genderPreferenceFemaleImage")
+        
+                                                        var className = "change-opacity"
+        
+                                                        genderPreferenceMaleImage.addEventListener("click",()=>{
+                                                                genderPreferenceMaleImage.classList.remove("change-opacity")
+                                                                genderPreferenceFemaleImage.classList.add(className)
+                                                        })
+        
+                                                        genderPreferenceFemaleImage.addEventListener("click",()=>{
+                                                                genderPreferenceMaleImage.classList.add("change-opacity")
+                                                                genderPreferenceFemaleImage.classList.remove(className)
+                                                                
+                                                        })
+                                                </script>
+                
+                                        </div>
+                                        </div>
                         </div>
-                    <div class="col">
-                        
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option1" style="display: none;"  >
-                    <label  for="exampleRadios2" style="color:red;">
-                            <img src="{{url_for('static',filename='icons/Female_Icon_2.png')}}"class="img-thumbnail selectGender-image">
-                    </label>
-                              </div>
-                            </div>
-                            
-                          </div>
-                    
 
-                </div>
+                        <button type="button" class="btn btn-primary btn-large">
+                                Start Matching 
+                        </button>
 
-                <button type="button" class="btn btn-primary btn-large">
-                        Start Matching 
-                </button>
-        </form>
-</div>
+                </form>
+        </div>
+
+{% endmacro %}
+

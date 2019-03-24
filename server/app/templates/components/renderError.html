@@ -1,9 +1,10 @@
-
 {% macro renderError(error) %}
-<div class="page-container">
-		<div class="text-center text-large text__red" role="alert">
-			<strong>ERROR:  {{ error }}</strong>
-		</div>
-		<img src="{{url_for('static',filename='icons/err.png')}}" alt="..." class="img-thumbnail page-error-image" >
-</div>
+
+	<div class="page-container">
+			<div class="text-center text-large text__red" role="alert">
+				<strong>ERROR:  {{ error }}</strong>
+			</div>
+			<img src="{{url_for('static',filename='icons/err.png')}}" alt="..." class="img-thumbnail page-error-image" >
+	</div>
+
 {% endmacro %}

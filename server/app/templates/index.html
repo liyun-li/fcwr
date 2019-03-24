@@ -2,9 +2,9 @@
 
 {% from 'components/renderHome.html' import renderHome %}
 {% from 'components/renderError.html' import renderError %}
-{% from 'components/renderGroupNumber.html' import renderGroupNumber %}
+{% from 'components/renderSelectGenderPage.html' import renderSelectGenderPage %}
 {% from 'components/renderQueue.html' import renderQueue %}
-
+{% from 'components/renderGroupNumber.html' import renderGroupNumber %}
 
 {# CSS #}
 {% block links %}
@@ -18,7 +18,7 @@
 {% block content %}
 
 {% if error %}
-	{{renderHome()}}
+	{{renderSelectGenderPage() }}
 {% else %}
 
 
