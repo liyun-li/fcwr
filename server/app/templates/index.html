@@ -22,12 +22,10 @@
 {% endif %}
 
 {# user has filled out interest #}
-{% if has_interest %}
+{% if user %}
 
 {# Do async stuff #}
 <div id="waitlist"></div>
-
-{% else %}
 
 <div id="gender" class="text-center">
 	<h2>What's your gender?</h2>
@@ -41,7 +39,6 @@
 </div>
 
 {% endif %}
-
 
 {% endblock %}
 
