@@ -40,6 +40,7 @@ def index():
 
 @views.route('/tutorial', methods=['GET'])
 def tutorial():
+    print(2)
     return 'ok'
 
 
