@@ -1,7 +1,7 @@
 from flask import request, json, make_response, redirect, url_for, session, \
     Blueprint, render_template
 
-from app.models import db, User
+from app.models import db, User, UserStatus
 
 
 views = Blueprint('views', __name__)
@@ -14,13 +14,22 @@ def safer_commit(session):
     except:
         session.rollback()
         raise
-    finally:
-        return False
+    # finally:
+    #     return False
 
 def render_user_profile(open_id):
-    user = User.query.filter_by(open_id=open_id).first()
-    # if user.status == UserStatus.NonSex:
-    return "test"
+    users = User.query.filter_by(open_id=open_id)
+    if not users:
+        return "user not find"
+    user = users.first()
+    if user.status == UserStatus.NonSex:
+        return "please select sex and liked sex"
+    elif user.status == UserStatus.Waiting:
+        return "waiting in a queue"
+    elif user.status == UserStatus.Assigned:
+        return "you already assigned a number"
+    else:
+        return "invalid status"
 
 @views.route('/', methods=['GET'])
 def index():
@@ -28,28 +37,31 @@ def index():
         return render_user_profile(session['open_id'])
 
     open_id = request.args.get('open_id')
-    if open_id:
-        user = User.query.filter_by(open_id=open_id).first()
-        gender = 'M'
-        if not user:
-            user = User(open_id=open_id, gender=gender)
-            db.session.add(user)
 
-            if not safer_commit(db.session):
-                error = 'Something went wong. Please contact staff.'
-                return render_template('index.html', error=error)
+    if not open_id:
+        error = 'You must view this page with WeChat.'
+        return render_template('index.html', error=error)
+    else:
+        db.create_all()
+        user = User(open_id=str(open_id), gender='M', like_gender='M', status=UserStatus.NonSex)
+        print (user.open_id)
+        print (user.gender)
+        print (user.like_gender)
+        print (user.status)
 
-        return render_template('index.html', gender=gender)
+        db.session.add(user)
 
-    error = 'You must view this page with WeChat.'
-    return render_template('index.html', error=error)
+        if not safer_commit(db.session):
+            error = 'Something went wong. Please contact staff.'
+            return render_template('index.html', error=error)
 
+        session['open_id'] = open_id
+        return render_user_profile(open_id)
 
 @views.route('/tutorial', methods=['GET'])
 def tutorial():
     print(2)
     return 'ok'
-
 
 @views.route('/status', methods=['GET'])
 def status():
