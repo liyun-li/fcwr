@@ -6,10 +6,42 @@
 			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
 			integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" 
 			crossorigin="anonymous">
+			<link href="https://fonts.googleapis.com/css?family=Teko" rel="stylesheet">
 		{% block links %}{% endblock %}
+		<style>
+			html, body {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				width: 100%;
+				color: #003333;
+				font-size:62.5%;
+				box-sizing: border-box;
+				font-family: 'Teko', sans-serif;
+			}
+
+			.text-large{
+				font-size:5rem;
+			}
+
+			.text__red{
+				color:#003333;
+			}
+
+			.page-container{
+				position: absolute;
+				top:50%;
+				left:50%;
+				transform: translate(-50%,-50%);
+			}
+
+			.page-error-image{
+				width:100%;
+			}
+		</style>
 	</head>
+
 	<body>
-		<h1 class="text-center">If You Are The One</h1>
 
 		<main>
 			{% block content %}{% endblock %}
