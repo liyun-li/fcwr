@@ -1,10 +1,7 @@
 $('#waitlist').ready(() => {
-	const setDatetime = () => {
-		const d = new Date();
-		const display = d.toLocaleTimeString();
-		$('#waitlist').text(display);
-		console.log(display);
-	};
-
-	const timer = setInterval(setDatetime, 1000);
+	// get /tutorial and display to #waitlist
+	axios.get('/tutorial').then(response => {
+		const data = response.data;
+		$('#waitlist').text(data);
+	});
 });
