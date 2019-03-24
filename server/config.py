@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from pathlib import Path
+from redis import Redis
 from os import getenv
 
 load_dotenv(verbose=True)
@@ -27,6 +28,12 @@ class Config:
     elif not (dbuser and dbhost and dbname):
         print('.env configuration incomplete')
         exit(1)
+
+    # session
+    # https://pythonhosted.org/Flask-Session/
+    # 'filesystem' is an alternative if you don't want to use Redis
+    SESSION_TYPE = 'redis'
+    SESSION_REDIS = Redis(host='fcwr_cache', port=6379)
 
     # track DB mod
     SQLALCHEMY_TRACK_MODIFICATIONS = True
