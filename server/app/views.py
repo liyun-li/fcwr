@@ -44,12 +44,6 @@ def tutorial():
     return 'ok'
 
 
-@views.route('/status', methods=['GET'])
-def status():
-    open_id = request.args.get('open_id')
-    return 'ok'
-
-
 @views.route('/interest', methods=['POST'])
 def interest():
     gender = reuqest.args.get('interest')
