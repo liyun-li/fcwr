@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
-{% from 'components/buttons.html' import icon %}
+
+{% from 'components/renderHome.html' import renderHome %}
+{% from 'components/renderError.html' import renderError %}
+{% from 'components/renderGroupNumber.html' import renderGroupNumber %}
+{% from 'components/renderQueue.html' import renderQueue %}
+
 
 {# CSS #}
 {% block links %}
@@ -12,17 +17,14 @@
 {# Site content #}
 {% block content %}
 
-
-
 {% if error %}
-	<div class="page-container">
-		<div class="text-center text-large text__red" role="alert">
-			<strong>ERROR:  {{ error }}</strong>
-		</div>
-		<img src="{{url_for('static',filename='icons/err.png')}}" alt="..." class="img-thumbnail page-error-image" >
-	</div>
-{% endif %}
+	{{renderHome()}}
+{% else %}
 
+
+
+	
+{%endif%}
 
 
 
@@ -30,6 +32,8 @@
 
 {# JavaScripts #}
 {% block scripts %}
+
+
 
 <script defer src="{{ url_for('static', filename='js/index.js') }}">
 </script>

@@ -1,0 +1,12 @@
+
+{% macro renderHome() %}
+<div class="page-container">
+		<div class="text-center text-large text__red" role="alert">
+			<strong>If You Are the One</strong>
+		</div>
+		<img src="{{url_for('static',filename='icons/home.png')}}" alt="..." class="img-thumbnail page-error-image" >
+		<button type="button" class="btn btn-primary btn-large">
+			Start Matching 
+		</button>
+</div>
+{% endmacro %}
