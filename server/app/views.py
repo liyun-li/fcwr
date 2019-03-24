@@ -16,23 +16,23 @@ def safer_commit(session):
     finally:
         return False
 
-
 @views.route('/', methods=['GET'])
 def index():
     open_id = request.args.get('open_id')
     if open_id:
         session['open_id'] = open_id
         user = User.query.filter_by(open_id=open_id).first()
-        gender = 'M'
+        # New User
         if not user:
-            user = User(open_id=open_id, gender=gender)
+            user = User(open_id=open_id)
             db.session.add(user)
 
             if not safer_commit(db.session):
                 error = 'Something went wong. Please contact staff.'
                 return render_template('index.html', error=error)
-
-        return render_template('index.html', gender=gender)
+        # User already matched
+        if user.number != null:
+            return render_template('index.html', number=user.number)
 
     error = 'You must view this page with WeChat.'
     return render_template('index.html', error=error)
@@ -55,9 +55,10 @@ def interest():
     return ''
 
 
-# Test the session
+# For Test
 @views.route('/hello', methods=['GET'])
 def hello():
     if 'open_id' in session:
+        print session['open_id']
         return 'you have logged in'
     return 'you have NOT logged in'
