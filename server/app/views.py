@@ -69,12 +69,6 @@ def index():
 
 @views.route('/tutorial', methods=['GET'])
 def tutorial():
-    print(2)
-    return 'ok'
-
-@views.route('/status', methods=['GET'])
-def status():
-    open_id = request.args.get('open_id')
     return 'ok'
 
 
