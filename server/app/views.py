@@ -11,9 +11,8 @@ def safer_commit(session):
         session.commit()
         return True
     except:
+        print ("Unexpected error:", sys.exc_info()[0])
         session.rollback()
-        raise
-    finally:
         return False
 
 @views.route('/', methods=['GET'])
@@ -26,38 +25,51 @@ def index():
         if not user:
             user = User(open_id=open_id)
             db.session.add(user)
-
             if not safer_commit(db.session):
-                error = 'Something went wong. Please contact staff.'
-                return render_template('index.html', error=error)
+                return 'Something went wong. Please contact staff.'
         # User already matched
-        if user.number != null:
-            return render_template('index.html', number=user.number)
+        if user.number != None:
+            return user.number;
+        # User is matching
+        if user.gender != None and user.like_gender != None:
+            return 'mathcing';
+        # Setting the user sex
+        return render_template('index.html')
 
     error = 'You must view this page with WeChat.'
     return render_template('index.html', error=error)
-
 
 @views.route('/tutorial', methods=['GET'])
 def tutorial():
     return 'ok'
 
-@views.route('/selfsex', methods=['POST'])
+@views.route('/setSex', methods=['POST'])
 def selfsex():
     user = User.query.filter_by(open_id=open_id).first()
-    gender = reuqest.args.get('selfsex')
-    return ''
+    gender = reuqest.args.get('sex')
+    user.gender = gender
+    db.session.add(user)
+    if not safer_commit(db.session):
+        return 'Something went wong. Please contact staff.'
+    return 'ok'
 
-@views.route('/interest', methods=['POST'])
+@views.route('/setInterest', methods=['POST'])
 def interest():
-    gender = reuqest.args.get('interest')
-    return ''
+    user = User.query.filter_by(open_id=open_id).first()
+    interest = reuqest.args.get('interest')
+    user.like_gender = interest
+    db.session.add(user)
+    if not safer_commit(db.session):
+        return 'Something went wong. Please contact staff.'
+    return 'ok'
 
-
-# For Test
+# ---------------------------- For Test
 @views.route('/hello', methods=['GET'])
 def hello():
     if 'open_id' in session:
         print(session['open_id'])
+        open_id = session['open_id']
+        user = User.query.filter_by(open_id=open_id).first()
+        print(user.number)
         return 'you have logged in'
     return 'you have NOT logged in'
