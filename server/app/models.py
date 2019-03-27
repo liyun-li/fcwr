@@ -1,8 +1,12 @@
 from sqlalchemy import Column, String, CheckConstraint as CC
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO,emit,send
+
 import enum
 
 db = SQLAlchemy()
+
+socketio = SocketIO()
 
 class User(db.Model):
     __tablename__ = 'user'

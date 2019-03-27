@@ -40,3 +40,5 @@ class Config:
 
     # template autoreload
     TEMPLATES_AUTO_RELOAD = True
+
+    SECRET_KEY = b'_5#y2L"F4Q8z\n\xec]/'

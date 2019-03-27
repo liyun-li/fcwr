@@ -2,10 +2,12 @@ from flask import request, json, make_response, redirect, url_for, session, \
     Blueprint, render_template
 
 from app.models import db, User
-
+import Queue
 
 views = Blueprint('views', __name__)
 
+q_male = Queue()
+q_female = Queue()
 def safer_commit(session):
     try:
         session.commit()
@@ -45,6 +47,7 @@ def tutorial():
 
 @views.route('/setSex', methods=['POST'])
 def selfsex():
+    open_id = session['open_id']
     user = User.query.filter_by(open_id=open_id).first()
     gender = reuqest.args.get('sex')
     user.gender = gender
@@ -55,12 +58,17 @@ def selfsex():
 
 @views.route('/setInterest', methods=['POST'])
 def interest():
+    open_id = session['open_id']
     user = User.query.filter_by(open_id=open_id).first()
     interest = reuqest.args.get('interest')
     user.like_gender = interest
     db.session.add(user)
     if not safer_commit(db.session):
         return 'Something went wong. Please contact staff.'
+    if user.like_gender == 'male':
+        q_male.put(open_id)
+    else:
+        q_female.put(open_id)
     return 'ok'
 
 # ---------------------------- For Test
@@ -73,3 +81,7 @@ def hello():
         print(user.number)
         return 'you have logged in'
     return 'you have NOT logged in'
+
+@views.route('/test', methods=['GET'])
+def test():
+    return render_template('test.html')
