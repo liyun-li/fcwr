@@ -4,12 +4,31 @@
     <title>Flask-SocketIO Test</title>
     <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.5.1/socket.io.min.js"></script>
+    <style type="text/css">
+    	.loader {
+		  border: 5px solid #a9a9a9; /* Light grey */
+		  border-top: 5px solid #000000; /* Black */
+		  border-radius: 50%;
+		  width: 120px;
+		  height: 120px;
+		  animation: spin 2s linear infinite;
+		}
+
+		@keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+		}
+    </style>
     <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         var socket = io.connect();
 
-        socket.on('connect', function() {
+        socket.on('connect', function(){
             socket.emit('connect_event', {data: 'connected!'});
+        });
+
+        socket.on("get_number", function(num){
+        	$('#res-div').append('<br>get a number' + num.data + '</br>');
         });
 
         socket.on('server_response', function(msg) {
@@ -25,6 +44,14 @@
     </script>   
 </head>
 <body>
+	<center>
+	<div id="load-div" style="width: 50%;">
+		<div class="loader"></div>
+		等待配对中...
+	</div>
+	<div id="res-div"></div>
+	</center>
+
     <h2>Matching</h2>
     <form id="emit" method="POST" action='#'>
         <input type="text" name="emit_data" id="emit_data" placeholder="Message">
