@@ -20,27 +20,27 @@
 		}
     </style>
     <script type="text/javascript" charset="utf-8">
-    $(document).ready(function() {
-        var socket = io.connect();
+	    $(document).ready(function() {
+	        var socket = io.connect();
 
-        socket.on('connect', function(){
-            socket.emit('connect_event', {data: 'connected!'});
-        });
+	        socket.on('connect', function(){
+	            socket.emit('connect_event', {data: 'connected!'});
+	        });
 
-        socket.on("get_number", function(num){
-        	$('#res-div').append('<br>get a number' + num.data + '</br>');
-        });
+	        socket.emit("get_number",{data:"waiting"});
+	        socket.on("response", function(num){
+	        	$('#res-div').append('<br>' + $('<div/>').text('Received a pairing number #' + ': ' + num.data).html());
+	        });
 
-        socket.on('server_response', function(msg) {
-            $('#log').append('<br>' + $('<div/>').text('Received #' + ': ' + msg.data).html());
-        });
+	        socket.on('server_response', function(msg) {
+	            $('#log').append('<br>' + $('<div/>').text('Received #' + ': ' + msg.data).html());
+	        });
 
-        $('form#emit').submit(function(event) {
-            socket.emit('client_event', {data: $('#emit_data').val()});
-            return false;
-        });
-    });
-    
+	        $('form#emit').submit(function(event) {
+	            socket.emit('client_event', {data: $('#emit_data').val()});
+	            return false;
+	        });
+	    });
     </script>   
 </head>
 <body>

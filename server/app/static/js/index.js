@@ -53,7 +53,7 @@ $(document).ready(function() {
 				},
 	    	});
 		}else{
-			alert("you must select your gender and interest");
+			alert("errrrr... sth happened");
 		}
 	});
 });
