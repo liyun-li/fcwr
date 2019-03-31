@@ -95,10 +95,8 @@ def index_2():
 def selfsex():
     open_id = session['open_id']
     user = User.query.filter_by(open_id=open_id).first()
-    gender = request.args.get('sex')
-    user.gender = gender
-    like_gender = request.args.get('interest') 
-    user.like_gender = like_gender
+    user.gender = request.form['gender']
+    user.like_gender = reques.form['like_gender']
     db.session.add(user)
     if not safer_commit(db.session):
         return 'Something went wong. Please contact staff.'
