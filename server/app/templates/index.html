@@ -22,20 +22,41 @@
 {% endif %}
 
 {# user has filled out interest #}
-{% if user %}
+{% if not gender and not preference %}
+
+<div id="gender-preference" class="text-center">
+	<div id="gender">
+		<h2>What's your gender?</h2>
+		{{ icon('Female_Icon_2.png', 'gender-f') }}
+		{{ icon('Male_Icon_2.png', 'gender-m') }}
+	</div>
+	<div id="preference">
+		<h2>What's your preference?</h2>
+		{{ icon('Male_Icon_2.png', 'preference-m') }}
+		{{ icon('Female_Icon_2.png', 'preference-f') }}
+	</div>
+
+	<button id="set-preference" class="btn btn-primary">
+		Set Preference
+	</button>
+	<button id="reset-preference" class="btn btn-secondary">
+		Reset
+	</button>
+</div>
+
+{% elif status == 'Waiting' %}
 
 {# Do async stuff #}
-<div id="waitlist"></div>
-
-<div id="gender" class="text-center">
-	<h2>What's your gender?</h2>
-	{{ icon('Female_Icon_2.png') }}
-	{{ icon('Male_Icon_2.png') }}
+<div class="text-center">
+	<h3>Your are on the waitlist</h3>
+	<h1 id="waitlist"></h1>
 </div>
-<div id="interest" class="text-center">
-	<h2>What's your preference?</h2>
-	{{ icon('Male_Icon_2.png') }}
-	{{ icon('Female_Icon_2.png') }}
+
+{% elif status == 'Assigned' %}
+
+<div class="text-center">
+	<h3>Your group number is:</h3>
+	<h1 id="group_id">{{ group_id }}</h1>
 </div>
 
 {% endif %}

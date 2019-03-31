@@ -7,15 +7,16 @@ db = SQLAlchemy()
 
 
 class UserStatus(enum.Enum):
-    NonSex = "Gender not selected"
-    Waiting = "Waiting in the queue"
-    Assigned = "Already assigned a number"
+    Selecting = "Need to select gender and preference"
+    Waiting = "Waiting in queue"
+    Assigned = "Assigned a number"
 
 
 class User(db.Model):
     __tablename__ = 'user'
 
-    open_id = Column(String(255), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    open_id = Column(String(255))
     # gender
     gender = Column(String(1))
     # preference
@@ -25,7 +26,8 @@ class User(db.Model):
 
     __table_args__ = (
         CC('gender = "M" or gender = "F"'),
-        CC('preference = "M" or preference = "F"')
+        CC('preference = "M" or preference = "F"'),
+        UC('open_id')
     )
 
 
