@@ -102,7 +102,13 @@ def selfsex():
     db.session.add(user)
     if not safer_commit(db.session):
         return 'Something went wong. Please contact staff.'
-    return 'ok'
+    return redirect(matching)
+
+@views.route("/matching", methods=['GET'])
+def matching():
+    return render_template('matching.html')
+
+
 # ---------------------------- For Test
 @views.route('/testSession', methods=['GET'])
 def hello():

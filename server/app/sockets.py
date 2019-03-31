@@ -2,6 +2,7 @@ from app.models import socketio
 from flask_socketio import emit,send
 from flask import session, request
 from app.models import db, User
+from sqlalchemy import and_
 
 clients={}
 usednum=[0,1111,1234]
@@ -10,13 +11,13 @@ usednum=[0,1111,1234]
 def send_number(msg):
     open_id=msg['open_id']
     user = User.query.filter_by(open_id=open_id).first()
-    if not user
+    if not user:
         emit('response', {'data':'user not register'})
         return
     if user.number != None:
         emit('response', {'data':user.number})
         return
-    user_matched = User.query.filter_by(number!=None and gender=user.like_gender).first()
+    user_matched = User.query.filter_by(and_(number!=None, gender=user.like_gender) ).first()
     if not user_matched:
         temp = random.randint(0, 9999)
         while (temp in usednum):
