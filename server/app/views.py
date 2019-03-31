@@ -84,37 +84,24 @@ def index_2():
             return user.number;
         # User is matching
         if user.gender != None and user.like_gender != None:
-            return 'mathcing';
+            return 'matching';
         # Setting the user sex
         return render_template('index.html')
 
     error = 'You must view this page with WeChat.'
     return render_template('index.html', error=error)
 
-@views.route('/setSex', methods=['POST'])
+@views.route('/setSexAndInterest', methods=['POST'])
 def selfsex():
     open_id = session['open_id']
     user = User.query.filter_by(open_id=open_id).first()
-    gender = reuqest.args.get('sex')
+    gender = request.args.get('sex')
     user.gender = gender
+    like_gender = request.args.get('interest') 
+    user.like_gender = like_gender
     db.session.add(user)
     if not safer_commit(db.session):
         return 'Something went wong. Please contact staff.'
-    return 'ok'
-
-@views.route('/setInterest', methods=['POST'])
-def interest():
-    open_id = session['open_id']
-    user = User.query.filter_by(open_id=open_id).first()
-    interest = reuqest.args.get('interest')
-    user.like_gender = interest
-    db.session.add(user)
-    if not safer_commit(db.session):
-        return 'Something went wong. Please contact staff.'
-    if user.like_gender == 'male':
-        q_male.put(open_id)
-    else:
-        q_female.put(open_id)
     return 'ok'
 
 # ---------------------------- For Test
