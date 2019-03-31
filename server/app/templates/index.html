@@ -31,14 +31,18 @@
 
 <div id="gender" class="text-center">
 	<h2>What's your gender?</h2>
-	{{ icon('Female_Icon_2.png') }}
-	{{ icon('Male_Icon_2.png') }}
+	{{ icon('Female_Icon_2.png','self-female') }}
+	{{ icon('Male_Icon_2.png','self-male') }}
 </div>
 <div id="interest" class="text-center">
 	<h2>What's your preference?</h2>
-	{{ icon('Male_Icon_2.png') }}
-	{{ icon('Female_Icon_2.png') }}
+	{{ icon('Male_Icon_2.png','prefer-male') }}
+	{{ icon('Female_Icon_2.png','prefer-female') }}
 </div>
+
+<center>
+<button id="submit-btn" type="submit" style="width: 80%;">submit</button>
+</center>
 
 {% endif %}
 
@@ -47,8 +51,7 @@
 
 {# JavaScripts #}
 {% block scripts %}
-
+<script type="text/javascript"></script>
 <script defer src="{{ url_for('static', filename='js/index.js') }}">
 </script>
-
 {% endblock %}

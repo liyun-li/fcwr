@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{# CSS #}
+{% block links %}
+
+<link rel="stylesheet" type="text/css"
+   href="{{ url_for('static', filename='css/index.css') }}">
+
+{% endblock %}
+
+{# Site content #}
+{% block content %}
+
+{# display error if there is any #}
+{% if error %}
+
+<div class="alert alert-danger text-center">
+	<strong>ERROR: </strong>{{ error }}
+</div>
+
+{% endif %}
+
+<center>
+Waiting...
+</center>
+{# JavaScripts #}
+{% block scripts %}
+<script type="text/javascript"></script>
+</script>
+{% endblock %}
