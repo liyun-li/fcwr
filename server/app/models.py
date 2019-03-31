@@ -1,5 +1,5 @@
-from sqlalchemy import Column, String, \
-    ForeignKey as FK, CheckConstraint as CC
+from sqlalchemy import Integer, Column, String, ForeignKey as FK, \
+    CheckConstraint as CC, UniqueConstraint as UC
 from flask_sqlalchemy import SQLAlchemy
 import enum
 
@@ -27,12 +27,6 @@ class User(db.Model):
         CC('gender = "M" or gender = "F"'),
         CC('preference = "M" or preference = "F"')
     )
-
-
-class Waitlist(db.Model):
-    __tablename__ = 'waitlist'
-
-    open_id = Column(String(255), FK('user.open_id'), primary_key=True)
 
 
 class Matches(db.Model):
