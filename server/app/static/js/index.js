@@ -42,7 +42,7 @@ $(document).ready(function() {
 				type: "POST",
 				url: "/setSexAndInterest?sex="+self_gender+"?interest="+prefer_gender,
 				success:function(res){
-					location.reload();
+					alert("success");
 				},
 				error:function(err){
 					alert("err set sex" + err);
