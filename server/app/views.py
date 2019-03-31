@@ -1,13 +1,9 @@
 from flask import request, json, make_response, redirect, url_for, session, \
     Blueprint, render_template
-
-import Queue
 from app.models import db, User, UserStatus
 
 views = Blueprint('views', __name__)
 
-q_male = Queue()
-q_female = Queue()
 def safer_commit(session):
     try:
         session.commit()
