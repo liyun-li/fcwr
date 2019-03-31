@@ -96,11 +96,11 @@ def selfsex():
     open_id = session['open_id']
     user = User.query.filter_by(open_id=open_id).first()
     user.gender = request.form['gender']
-    user.like_gender = reques.form['like_gender']
+    user.like_gender = request.form['like_gender']
     db.session.add(user)
     if not safer_commit(db.session):
         return 'Something went wong. Please contact staff.'
-    return redirect(matching)
+    return "success"
 
 @views.route("/matching", methods=['GET'])
 def matching():

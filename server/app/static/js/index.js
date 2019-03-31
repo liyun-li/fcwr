@@ -42,11 +42,11 @@ $(document).ready(function() {
 				type: "POST",
 				url: "/setSexAndInterest",
 				data:{
-					sex:self_gender,
-					interest:prefer_gender,
+					gender:self_gender,
+					like_gender:prefer_gender,
 				},
 				success:function(res){
-					alert("success");
+					window.location = "/matching";
 				},
 				error:function(err){
 					alert("err set sex" + err);
