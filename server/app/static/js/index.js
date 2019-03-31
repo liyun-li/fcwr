@@ -40,7 +40,11 @@ $(document).ready(function() {
 		if(prefer_gender && self_gender){
 			$.ajax({
 				type: "POST",
-				url: "/setSexAndInterest?sex="+self_gender+"?interest="+prefer_gender,
+				url: "/setSexAndInterest",
+				data:{
+					sex:self_gender,
+					interest:prefer_gender,
+				},
 				success:function(res){
 					alert("success");
 				},

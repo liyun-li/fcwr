@@ -96,8 +96,10 @@ def selfsex():
     open_id = session['open_id']
     user = User.query.filter_by(open_id=open_id).first()
     gender = request.args.get('sex')
+    print(gender)
     user.gender = gender
     like_gender = request.args.get('interest') 
+    print(like_gender)
     user.like_gender = like_gender
     db.session.add(user)
     if not safer_commit(db.session):
@@ -122,4 +124,4 @@ def hello():
 
 @views.route('/testWebsockt', methods=['GET'])
 def test():
-    return render_template('test.html')
+    return render_template('matching.html')

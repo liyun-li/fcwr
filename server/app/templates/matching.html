@@ -1,31 +1,10 @@
-{% extends 'base.html' %}
-
-{# CSS #}
-{% block links %}
-
-<link rel="stylesheet" type="text/css"
-   href="{{ url_for('static', filename='css/index.css') }}">
-
-{% endblock %}
-
-{# Site content #}
-{% block content %}
-
-{# display error if there is any #}
-{% if error %}
-
-<div class="alert alert-danger text-center">
-	<strong>ERROR: </strong>{{ error }}
-</div>
-
-{% endif %}
-
-<center>
-Waiting...
-</center>
-{# JavaScripts #}
-{% block scripts %}
-<script type="text/javascript">
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Flask-SocketIO Test</title>
+    <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="//cdn.bootcss.com/socket.io/1.5.1/socket.io.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
     $(document).ready(function() {
         var socket = io.connect();
 
@@ -42,6 +21,15 @@ Waiting...
             return false;
         });
     });
-</script>
-</script>
-{% endblock %}
+    
+    </script>   
+</head>
+<body>
+    <h2>Matching</h2>
+    <form id="emit" method="POST" action='#'>
+        <input type="text" name="emit_data" id="emit_data" placeholder="Message">
+        <input type="submit" value="Echo">
+    </form>
+    <div id='log'></div>
+</body>
+</html>
