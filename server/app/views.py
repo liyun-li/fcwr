@@ -81,7 +81,7 @@ def index_2():
                 return 'Something went wong. Please contact staff.'
         # User already matched
         if user.number != None:
-            return user.number;
+            return str(user.number);
         # User is matching
         if user.gender != None and user.like_gender != None:
             return 'matching';
