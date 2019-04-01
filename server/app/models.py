@@ -7,11 +7,6 @@ db = SQLAlchemy()
 
 socketio = SocketIO()
 
-class UserStatus(enum.Enum):
-    NonSex = "sex not selected"
-    Waiting = "waiting in the queue"
-    Assigned = "already assigned a number"
-
 class User(db.Model):
     __tablename__ = 'user'
 
@@ -20,8 +15,6 @@ class User(db.Model):
     gender = Column(String(1))
     # liked gender
     like_gender = Column(String(1))
-
-    status = Column(db.Enum(UserStatus))
     # number
     number = Column(db.Integer)
 
