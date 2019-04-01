@@ -10,7 +10,7 @@ usednum=[0,1111,1234]
 
 @socketio.on('get_number')
 def send_number(msg):
-    print(open_id)
+    open_id = session['open_id']
     user = User.query.filter(User.open_id==open_id).first()
     if user.gender == user.like_gender:
         return
