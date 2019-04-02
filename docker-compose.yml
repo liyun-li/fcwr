@@ -1,6 +1,6 @@
 version: '3'
 services:
-    app:
+    mp: # do not change name
         container_name: fcwr
         restart: always
         build: .
@@ -11,3 +11,16 @@ services:
         command: sh -c "FLASK_DEBUG=1 python serve.py"
         environment:
             - PYTHONUNBUFFERED=1
+        networks:
+            - fcwr_gateway
+
+    fcwr_cache:
+        container_name: fcwr_cache
+        restart: always
+        image: redis:5-alpine
+        networks:
+            - fcwr_gateway
+        tty: true
+
+networks:
+    fcwr_gateway: {}
