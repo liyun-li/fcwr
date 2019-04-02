@@ -3,10 +3,9 @@ from flask import request, json, make_response, redirect, url_for, session, \
 
 from sqlalchemy import or_
 
-from app.models import db, User, Matches, UserStatus
-from app.utils import safer_commit, get_user, render_user_profile
+from app.models import db, User, Group, Matched, UserStatus
+from app.utils import safer_commit, get_user, set_status
 
-from random import randint
 from json import dumps
 
 views = Blueprint('views', __name__)
@@ -17,7 +16,7 @@ def index():
     request_open_id = request.args.get('open_id')
     session_open_id = session.get('open_id')
 
-    print(session.items())
+    # print(session.items())
 
     if not request_open_id and not session_open_id:
         error = 'You must view this page with WeChat.'
@@ -37,7 +36,7 @@ def index():
         session['open_id'] = open_id
         session['status'] = str(UserStatus.Selecting)\
             .replace('UserStatus.', '')
-    elif user:
+    else:
         session['gender'] = user.gender
         session['preference'] = user.preference
         session['open_id'] = user.open_id
@@ -45,15 +44,12 @@ def index():
             .replace('UserStatus.', '')
 
         if user.status == UserStatus.Assigned:
-            group = Matches.query.filter(
-                or_(Matches.user_1 == open_id, Matches.user_2 == open_id)
-            ).first()
             return render_template(
                 'index.html',
                 gender=session['gender'],
                 preference=session['preference'],
                 status=session['status'],
-                group_id=group.group_id
+                group_id=user.group_id
             )
 
     return render_template(
@@ -69,8 +65,50 @@ def tutorial():
     return ''
 
 
+@views.route('/rematch', methods=['GET'])
+def rematch():
+    open_id = session.get('open_id')
+
+    user = get_user(open_id)
+
+    if not user:
+        return '', 404
+
+    match = get_user(user.match)
+
+    if not match:
+        return '', 404
+
+    # delete user from queue
+    db.session.delete(user)
+
+    if safer_commit(db.session):
+        matched = Matched(user_1=user.open_id, user_2=match.open_id)
+        db.session.add(matched)
+        # commit the matched pair
+        safer_commit(db.session)
+
+        set_status(match)
+        safer_commit(db.session)
+
+        # add user to the end of list (hopefully)
+        new_user = User(
+            open_id=user.open_id, gender=user.gender,
+            preference=user.preference)
+
+        db.session.add(new_user)
+
+        # set match of user's status
+        set_status(user)
+        safer_commit(db.session)
+
+        return '', 200
+
+    return 'Something went wrong. Please talk to staff', 403
+
+
 @views.route('/set_preference', methods=['POST'])
-def interest():
+def set_preference():
     genders = ['M', 'F']
     data = request.get_json()
     gender = data.get('gender')
@@ -86,21 +124,11 @@ def interest():
 
         user = User(open_id=open_id, gender=gender, preference=preference)
 
-        user_waiting = User.query.filter_by(
-            preference=gender, gender=preference,
-            status=UserStatus.Waiting).order_by(User.id).first()
+        set_status(user)
 
-        if user_waiting:
-            user_waiting.status = UserStatus.Assigned
-            user.status = UserStatus.Assigned
-            matches = Matches(
-                group_id=randint(1000, 9999),
-                user_1=user_waiting.open_id, user_2=user.open_id)
-            db.session.add(matches)
-        else:
-            user.status = UserStatus.Waiting
-
+        # whichever case it is, add user
         db.session.add(user)
+
         if safer_commit(db.session):
             session['gender'] = gender
             session['preference'] = preference

@@ -1,8 +1,18 @@
 $('#waitlist').ready(() => {
-	// get /tutorial and display to #waitlist
-	axios.get('/tutorial').then(response => {
-		const data = response.data;
-		$('#waitlist').text(data);
+	const socket = io.connect('http://' + document.domain + ':' + location.port);
+	socket.on('connect', () => {
+		socket.emit('get_queue', {});
+	});
+});
+
+$('#rematch').ready(() => {
+	$('#rematch').click(() => {
+		axios.get('/rematch').then(response => {
+			if (response.status === 200) {
+				// request successful, refresh
+				window.location.href = '/';
+			}
+		});
 	});
 });
 
