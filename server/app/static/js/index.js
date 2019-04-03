@@ -10,7 +10,7 @@ $('#rematch').ready(() => {
 		axios.get('/rematch').then(response => {
 			if (response.status === 200) {
 				// request successful, refresh
-				window.location.href = '/';
+				location.reload();
 			}
 		});
 	});
@@ -28,7 +28,7 @@ $('#gender-preference').ready(() => {
 			}).then(response => {
 				if (response.status === 200) {
 					// Yay, refresh
-					window.location.href = '/';
+					location.reload();
 				} else if (response.status === 403) {
 					// Uh oh something went wrong
 					alert(response.data);
