@@ -40,3 +40,6 @@ class Config:
 
     # template autoreload
     TEMPLATES_AUTO_RELOAD = True
+
+    # Debug mode
+    DEBUG = True

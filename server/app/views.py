@@ -81,30 +81,40 @@ def rematch():
 
     # delete user from queue
     db.session.delete(user)
+    if not safer_commit():
+        return 'Something went wrong. Please talk to staff', 500
 
-    if safer_commit(db.session):
-        matched = Matched(user_1=user.open_id, user_2=match.open_id)
-        db.session.add(matched)
-        # commit the matched pair
-        safer_commit(db.session)
+    matched = Matched(user_1=user.open_id, user_2=match.open_id)
+    db.session.add(matched)
+    # commit the matched pair
+    if not safer_commit():
+        return 'Something went wrong. Please talk to staff', 500
 
-        set_status(match)
-        safer_commit(db.session)
+    set_status(match)
+    if not safer_commit():
+        return 'Something went wrong. Please talk to staff', 500
 
-        # add user to the end of list (hopefully)
-        new_user = User(
-            open_id=user.open_id, gender=user.gender,
-            preference=user.preference)
+    # add user to the end of list (hopefully)
+    new_user = User(
+        open_id=user.open_id, gender=user.gender,
+        preference=user.preference)
 
-        db.session.add(new_user)
+    db.session.add(new_user)
 
-        # set match of user's status
-        set_status(user)
-        safer_commit(db.session)
+    # set match of user's status
+    set_status(new_user)
+    if not safer_commit():
+        return 'Something went wrong. Please talk to staff', 500
 
-        return '', 200
+    group = Group.query.filter_by(group_id=match.group_id).first()
+    if not group:
+        return 'Something went wrong. Please talk to staff', 500
 
-    return 'Something went wrong. Please talk to staff', 403
+    db.session.delete(group)
+    if not safer_commit():
+        return 'Something went wrong. Please talk to staff', 500
+
+    return '', 200
 
 
 @views.route('/set_preference', methods=['POST'])
@@ -129,7 +139,7 @@ def set_preference():
         # whichever case it is, add user
         db.session.add(user)
 
-        if safer_commit(db.session):
+        if safer_commit():
             session['gender'] = gender
             session['preference'] = preference
 

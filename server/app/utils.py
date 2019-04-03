@@ -1,18 +1,18 @@
 from flask import session, request
+from sqlalchemy import and_
+from sqlalchemy.sql import exists
 from app.models import db, User, Group, Matched, UserStatus
 
 from random import randint
 
 
-def safer_commit(session):
+def safer_commit():
     try:
-        session.commit()
+        db.session.commit()
         return True
     except:
-        session.rollback()
-        raise
-    # finally:
-    #     return False
+        db.session.rollback()
+        return False
 
 
 def get_user(open_id):
@@ -30,20 +30,25 @@ def set_status(user):
     gender = user.gender
     preference = user.preference
 
-    # TODO: bad code, rewrite
-    # get the list of user who the user has matched
-    matched = [
-        matched.user_2 for matched in
-        Matched.query.filter_by(user_1=open_id).all()
-    ]
-
     # get prefered match, see if there's any
     # first get users of interest
     # then filter out the ones already matched before
-    match_waiting = User.query.filter_by(
+    waiting = User.query.filter_by(
         preference=gender, gender=preference,
-        status=UserStatus.Waiting).filter(
-        User.match not in matched).order_by(User.id).first()
+        status=UserStatus.Waiting
+    ).order_by(User.id).all()
+
+    matched = {}
+    for match in Matched.query.filter_by(user_1=open_id).all():
+        matched[match.user_2] = 1
+
+    match_waiting = None
+    for i in range(len(waiting)):
+        if waiting[i].open_id not in matched:
+            match_waiting = waiting[i]
+            break
+
+    print(match_waiting)
 
     if match_waiting:  # if there's someone waiting for you
         # generate
@@ -87,5 +92,3 @@ def set_status(user):
         user.match = None
         # set group_id to null
         user.group_id = None
-
-    print(user)

@@ -8,7 +8,8 @@ services:
             - ./server:/fcwr
         ports:
             - 3000:3000
-        command: sh -c "gunicorn -b 0.0.0.0:3000 --worker-class eventlet -w 1 --reload serve:app"
+        #command: gunicorn -b 0.0.0.0:3000 --worker-class eventlet -w 1 --reload serve:app # production
+        command: python serve.py
         environment:
             - PYTHONUNBUFFERED=1
         networks:
