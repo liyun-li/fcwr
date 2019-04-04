@@ -48,8 +48,11 @@
 
 {# Do async stuff #}
 <div class="text-center">
-	<h3>Your are on the waitlist</h3>
+	<h3>You are on the waitlist</h3>
 	<h1 id="waitlist"></h1>
+	<button type="button" id="reload" class="btn btn-primary">
+		Refresh
+	</button>
 </div>
 
 {% elif status == 'Assigned' %}
@@ -57,6 +60,9 @@
 <div class="text-center">
 	<h3>Your group number is:</h3>
 	<h1 id="group_id">{{ group_id }}</h1>
+	<button type="button" id="rematch" class="btn btn-primary">
+		Rematch
+	</button>
 </div>
 
 {% endif %}

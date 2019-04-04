@@ -13,6 +13,8 @@ class UserStatus(enum.Enum):
 
 
 class User(db.Model):
+    '''User Information'''
+
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
@@ -24,16 +26,37 @@ class User(db.Model):
     # refer to `UserStatus`
     status = Column(db.Enum(UserStatus))
 
+    # how many people waiting in front of you??
+    queue = Column(Integer)
+
+    # do you have a match?
+    match = Column(String(255), FK('user.open_id'))
+
+    # wechat group id
+    group_id = Column(Integer, FK('group.group_id'))
+
     __table_args__ = (
         CC('gender = "M" or gender = "F"'),
         CC('preference = "M" or preference = "F"'),
-        UC('open_id')
+        UC('open_id'),
+        UC('match')
     )
 
 
-class Matches(db.Model):
-    __tablename__ = 'matches'
+class Group(db.Model):
+    '''WeChat group ID'''
 
-    group_id = Column(String(4), primary_key=True)
-    user_1 = Column(String(255), FK('user.open_id'))
-    user_2 = Column(String(255), FK('user.open_id'))
+    __tablename__ = 'group'
+
+    group_id = Column(Integer, primary_key=True)
+
+    __table_args__ = (CC('group_id > 999 and group_id < 10000'),)
+
+
+class Matched(db.Model):
+    '''For preventing the same matches multiple times'''
+
+    __tablename__ = 'matched'
+
+    user_1 = Column(String(255), FK('user.open_id'), primary_key=True)
+    user_2 = Column(String(255), FK('user.open_id'), primary_key=True)

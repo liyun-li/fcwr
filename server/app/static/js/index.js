@@ -1,8 +1,25 @@
 $('#waitlist').ready(() => {
-	// get /tutorial and display to #waitlist
-	axios.get('/tutorial').then(response => {
-		const data = response.data;
-		$('#waitlist').text(data);
+	const socket = io.connect('http://' + document.domain + ':' + location.port);
+	socket.on('connect', () => {
+		socket.emit('get_queue', {});
+	});
+	socket.on('waitlist', data => {
+		if ('queue' in data && data.queue > 0) {
+			$('#waitlist').text(`#${data.queue}`);
+		}
+	});
+});
+
+$('#reload').click(() => location.reload());
+
+$('#rematch').ready(() => {
+	$('#rematch').click(() => {
+		axios.get('/rematch').then(response => {
+			if (response.status === 200) {
+				// request successful, refresh
+				location.reload();
+			}
+		});
 	});
 });
 
@@ -18,7 +35,7 @@ $('#gender-preference').ready(() => {
 			}).then(response => {
 				if (response.status === 200) {
 					// Yay, refresh
-					window.location.href = '/';
+					location.reload();
 				} else if (response.status === 403) {
 					// Uh oh something went wrong
 					alert(response.data);
