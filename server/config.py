@@ -35,6 +35,8 @@ class Config:
     SESSION_TYPE = 'redis'
     SESSION_REDIS = Redis(host='fcwr_cache', port=6379)
 
+    SECRET_KEY = '823rFF43j2f 0u4mc-r0329ASDcu'
+
     # track DB mod
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 

@@ -1,4 +1,4 @@
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, emit
 from flask import session, request
 
 from app.utils import get_user
@@ -13,4 +13,8 @@ def send_queue(data):
     if open_id:
         user = get_user(open_id)
         if user:
-            emit({'queue': user.queue})
+            emit('waitlist', {'queue': user.queue})
+        else:
+            emit('waitlist', {'error': 'User not found'})
+    else:
+        emit('waitlist', {'error': 'Oh no. No open id'})

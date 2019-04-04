@@ -3,7 +3,14 @@ $('#waitlist').ready(() => {
 	socket.on('connect', () => {
 		socket.emit('get_queue', {});
 	});
+	socket.on('waitlist', data => {
+		if ('queue' in data && data.queue > 0) {
+			$('#waitlist').text(`#${data.queue}`);
+		}
+	});
 });
+
+$('#reload').click(() => location.reload());
 
 $('#rematch').ready(() => {
 	$('#rematch').click(() => {
