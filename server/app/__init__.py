@@ -6,24 +6,22 @@ def create_app():
 
     app = Flask(__name__)
 
+    # register blueprints
+    app.register_blueprint(views)
+
     # configure
     app.config.from_object('config.Config')
 
     # initialize database
     db.init_app(app)
     with app.app_context():
-        db.drop_all()
+        if app.config['DEBUG']:
+            db.drop_all()
         db.create_all()
+    app.db = db
 
     # initialize socketio
     socketio.init_app(app)
-
-    app.register_blueprint(views)
-
-    app.db = db
     app.socketio = socketio
-
-    # secret key for session
-    app.secret_key = 'super secret key'
 
     return app

@@ -1,8 +1,5 @@
-from flask import request, json, make_response, redirect, url_for, session, \
-    Blueprint, render_template
-
+from flask import request, session, Blueprint, render_template
 from sqlalchemy import or_
-
 from app.models import db, User, Group, Matched, UserStatus
 from app.utils import safer_commit, get_user, set_status
 
@@ -90,6 +87,7 @@ def rematch():
     if not safer_commit():
         return 'Something went wrong. Please talk to staff', 500
 
+    # set status of the user matched with user
     set_status(match)
     if not safer_commit():
         return 'Something went wrong. Please talk to staff', 500
@@ -100,16 +98,20 @@ def rematch():
         preference=user.preference)
 
     db.session.add(new_user)
+    if not safer_commit():
+        return 'Something went wrong. Please talk to staff', 500
 
-    # set match of user's status
+    # set match of new user's status
     set_status(new_user)
     if not safer_commit():
         return 'Something went wrong. Please talk to staff', 500
 
-    group = Group.query.filter_by(group_id=match.group_id).first()
+    # get group id
+    group = Group.query.filter_by(group_id=user.group_id).first()
     if not group:
         return 'Something went wrong. Please talk to staff', 500
 
+    # and remove it
     db.session.delete(group)
     if not safer_commit():
         return 'Something went wrong. Please talk to staff', 500
@@ -143,6 +145,6 @@ def set_preference():
             session['gender'] = gender
             session['preference'] = preference
 
-        return '', 200
+            return '', 200
 
     return 'Something went wrong. Please contact staff.', 403

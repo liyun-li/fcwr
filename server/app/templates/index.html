@@ -48,8 +48,11 @@
 
 {# Do async stuff #}
 <div class="text-center">
-	<h3>Your are on the waitlist</h3>
+	<h3>You are on the waitlist</h3>
 	<h1 id="waitlist"></h1>
+	<button type="button" id="reload" class="btn btn-primary">
+		Refresh
+	</button>
 </div>
 
 {% elif status == 'Assigned' %}

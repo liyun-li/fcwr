@@ -2,7 +2,6 @@ from flask import session, request
 from sqlalchemy import and_
 from sqlalchemy.sql import exists
 from app.models import db, User, Group, Matched, UserStatus
-
 from random import randint
 
 
@@ -12,6 +11,7 @@ def safer_commit():
         return True
     except:
         db.session.rollback()
+        raise
         return False
 
 
@@ -38,17 +38,19 @@ def set_status(user):
         status=UserStatus.Waiting
     ).order_by(User.id).all()
 
+    # get the ones that are already matched once before
+    # and don't match them again
     matched = {}
     for match in Matched.query.filter_by(user_1=open_id).all():
         matched[match.user_2] = 1
+    for match in Matched.query.filter_by(user_2=open_id).all():
+        matched[match.user_1] = 1
 
     match_waiting = None
     for i in range(len(waiting)):
         if waiting[i].open_id not in matched:
             match_waiting = waiting[i]
             break
-
-    print(match_waiting)
 
     if match_waiting:  # if there's someone waiting for you
         # generate
@@ -59,6 +61,27 @@ def set_status(user):
         group = Group(group_id=group_id)
 
         db.session.add(group)
+
+        # adjust waitlist queue number
+        # TODO: rewrite
+        waitlist_1 = User.query.filter_by(
+            gender=gender, preference=preference,
+            status=UserStatus.Waiting
+        ).all()
+
+        waitlist_2 = User.query.filter_by(
+            gender=match_waiting.gender,
+            preference=match_waiting.preference,
+            status=UserStatus.Waiting
+        ).all()
+
+        for waiting_user in waitlist_1:
+            if waiting_user.queue > (user.queue or 1000000):
+                waiting_user.queue -= 1
+
+        for waiting_user in waitlist_2:
+            if waiting_user.queue > match_waiting.queue:
+                waiting_user.queue -= 1
 
         # set status to assigned
         match_waiting.status = UserStatus.Assigned
