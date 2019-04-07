@@ -8,9 +8,12 @@ $('#waitlist').ready(() => {
 			$('#waitlist').text(`#${data.queue}`);
 		}
 	});
+
+	$('#reload').click(() => location.reload());
+
+	setInterval(() => location.reload(), 10000);
 });
 
-$('#reload').click(() => location.reload());
 
 $('#rematch').ready(() => {
 	$('#rematch').click(() => {
