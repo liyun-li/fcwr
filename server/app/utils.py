@@ -1,8 +1,12 @@
 from flask import session, request
 from sqlalchemy import and_
 from sqlalchemy.sql import exists
-from app.models import db, User, Group, Matched, UserStatus
+from app.models import db, User, Group, Matched, WeChatId, UserStatus
 from random import randint
+
+
+def validate_user(open_id):
+    return WeChatId.query.filter_by(open_id=open_id).first()
 
 
 def safer_commit():

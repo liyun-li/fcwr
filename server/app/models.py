@@ -60,3 +60,11 @@ class Matched(db.Model):
 
     user_1 = Column(String(255), FK('user.open_id'), primary_key=True)
     user_2 = Column(String(255), FK('user.open_id'), primary_key=True)
+
+
+class WeChatId(db.Model):
+    '''For only accepting WeChat's Open ID'''
+
+    __tablename__ = 'wechat_open_id'
+
+    open_id = Column(String(255), primary_key=True)

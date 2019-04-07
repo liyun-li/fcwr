@@ -1,9 +1,12 @@
 from flask import request, session, Blueprint, render_template
 from sqlalchemy import or_
 from app.models import db, User, Group, Matched, UserStatus
-from app.utils import safer_commit, get_user, set_status
-
+from app.utils import safer_commit, get_user, set_status, validate_user
+from os import getenv
 from json import dumps
+import xmltodict
+import hashlib
+
 
 views = Blueprint('views', __name__)
 
@@ -14,12 +17,15 @@ def index():
     session_open_id = session.get('open_id')
 
     # print(session.items())
-
     if not request_open_id and not session_open_id:
         error = 'You must view this page with WeChat.'
         return render_template('index.html', error=error)
 
     open_id = request_open_id
+    if not validate_user(open_id):
+        error = 'You must view this page with WeChat.'
+        return render_template('index.html', error=error)
+
     if not request_open_id:
         open_id = session_open_id
     elif request_open_id != session_open_id:
@@ -65,6 +71,9 @@ def tutorial():
 @views.route('/rematch', methods=['GET'])
 def rematch():
     open_id = session.get('open_id')
+
+    if not validate_user(open_id):
+        return 'You must open this page with WeChat', 403
 
     user = get_user(open_id)
 
@@ -125,7 +134,10 @@ def set_preference():
     data = request.get_json()
     gender = data.get('gender')
     preference = data.get('preference')
-    open_id = session['open_id'] or request.args.get('open_id')
+    open_id = session.get('open_id') or request.args.get('open_id')
+
+    if not validate_user(open_id):
+        return 'You must view this page with WeChat', 403
 
     if open_id and gender and preference and \
             gender in genders and preference in genders:
@@ -148,3 +160,38 @@ def set_preference():
             return '', 200
 
     return 'Something went wrong. Please contact staff.', 403
+
+
+@view.route('/super_secret_api_for_doing_nothing', methods=['POST'])
+def validation():
+    timestamp = request.args.get('timestamp')
+    signature = request.args.get('signature')
+    nonce = request.args.get('nonce')
+    token = getenv('token')
+
+    # if not timestamp or not signature or not nonce or not token:
+    # return '', 403
+
+    print(timestamp)
+    print(signature)
+    print(nonce)
+
+    tmp_arr = [str(timestamp), str(nonce)]
+    tmp_arr.sort()
+    tmp_str = ''.join(tmp_arr)
+
+    m = hashlib.sha1()
+    m.update(tmp_str.encode())
+    print(m.digest(), signature)
+    print(m.digest() == signature)
+
+    xml = xmltodict.parse(request.data).get('xml')
+
+    if not xml:
+        return '', 403
+
+    open_id = xml.get('FromUserName')
+    if not open_id:
+        return '', 403
+
+    return '', 200

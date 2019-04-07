@@ -45,3 +45,5 @@ class Config:
 
     # Debug mode
     DEBUG = True
+
+    WECHAT_TOKEN = getenv('token')
