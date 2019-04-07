@@ -1,6 +1,6 @@
 from flask import request, session, Blueprint, render_template
 from sqlalchemy import or_
-from app.models import db, User, Group, Matched, UserStatus
+from app.models import db, User, Group, Matched, WeChatId, UserStatus
 from app.utils import safer_commit, get_user, set_status, validate_user
 from os import getenv
 from json import dumps
@@ -169,21 +169,21 @@ def validation():
     nonce = request.args.get('nonce')
     token = getenv('token')
 
-    # if not timestamp or not signature or not nonce or not token:
-    # return '', 403
+    if not timestamp or not signature or not nonce or not token:
+        return '', 403
 
-    print(timestamp)
-    print(signature)
-    print(nonce)
+    # print(timestamp)
+    # print(signature)
+    # print(nonce)
 
-    tmp_arr = [str(timestamp), str(nonce)]
+    tmp_arr = [str(timestamp), str(nonce), str(token)]
     tmp_arr.sort()
     tmp_str = ''.join(tmp_arr)
 
     m = hashlib.sha1()
     m.update(tmp_str.encode())
-    print(m.digest(), signature)
-    print(m.digest() == signature)
+    if not m.digest().hex() == signature:
+        return '', 403
 
     xml = xmltodict.parse(request.data).get('xml')
 
@@ -191,8 +191,15 @@ def validation():
         return '', 403
 
     open_id = xml.get('FromUserName')
-    if not open_id:
+    message = xml.get('Content')
+
+    if not open_id or not message == '参加':
         return '', 403
+
+    wechat_id = WeChatId(open_id=open_id)
+    db.session.add(wechat_id)
+    if not safer_commit():
+        return '', 500
 
     return '', 200
 
