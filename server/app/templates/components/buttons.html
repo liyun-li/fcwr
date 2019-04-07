@@ -1,6 +1,6 @@
 {# helper macro for icon path #}
 {% macro icon(icon_path, id, class_name='icon') %}
-<button style="margin-left: 28%" type="button" class="btn" id="{{ id }}">
+<button type="button" class="btn" id="{{ id }}">
 	<img style="width:100%;" src="{{ url_for('static', filename='icons/' + icon_path) }}" 
 	  class="{{ class_name }}">
 </button>
