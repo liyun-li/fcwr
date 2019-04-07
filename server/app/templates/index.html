@@ -26,21 +26,24 @@
 
 <div id="gender-preference" class="text-center">
 	<div id="gender">
-		<h2>What's your gender?</h2>
-		{{ icon('Female_Icon_2.png', 'gender-f') }}
-		{{ icon('Male_Icon_2.png', 'gender-m') }}
+        <h2>你的性别</h2>
+            {{ icon('Female_Icon_2.png', 'gender-f') }}
+            {{ icon('Male_Icon_2.png', 'gender-m') }}
+		<!-- {{ icon('Female_Icon_2.png', 'gender-f') }}
+		{{ icon('Male_Icon_2.png', 'gender-m') }} -->
 	</div>
 	<div id="preference">
-		<h2>What's your preference?</h2>
-		{{ icon('Male_Icon_2.png', 'preference-m') }}
-		{{ icon('Female_Icon_2.png', 'preference-f') }}
+		<h2>你的性取向</h2>
+		{{ icon('Male_Icon_1.png', 'preference-m') }}
+		{{ icon('Female_Icon_1.png', 'preference-f') }}
 	</div>
 
 	<button id="set-preference" class="btn btn-primary">
-		Set Preference
-	</button>
+        设置偏好
+    </button>
+    <br>
 	<button id="reset-preference" class="btn btn-secondary">
-		Reset
+        重置偏好
 	</button>
 </div>
 
@@ -48,10 +51,10 @@
 
 {# Do async stuff #}
 <div class="text-center">
-	<h3>You are on the waitlist</h3>
+	<h2>你在等待队列中</h2>
 	<h1 id="waitlist"></h1>
 	<button type="button" id="reload" class="btn btn-primary">
-		Refresh
+        刷新页面
 	</button>
 </div>
 
