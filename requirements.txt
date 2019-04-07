@@ -11,3 +11,4 @@ pathlib
 mysql-connector
 python-dotenv
 redis
+xmltodict
