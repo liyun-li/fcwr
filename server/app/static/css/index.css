@@ -12,3 +12,18 @@ html, body {
 	border: 0;
 	padding: 0;
 }
+
+h1 {
+    font-size: 100px;
+    margin-top: 10%;
+}
+
+h2 {
+    font-size: 70px;
+    margin-top: 10%;
+}
+
+.btn {
+    font-size: 40px;
+    margin-top: 10%;
+}
