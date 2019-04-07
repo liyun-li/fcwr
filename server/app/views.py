@@ -162,7 +162,7 @@ def set_preference():
     return 'Something went wrong. Please contact staff.', 403
 
 
-@view.route('/super_secret_api_for_doing_nothing', methods=['POST'])
+@views.route('/super_secret_api_for_doing_nothing', methods=['POST'])
 def validation():
     timestamp = request.args.get('timestamp')
     signature = request.args.get('signature')
@@ -195,3 +195,8 @@ def validation():
         return '', 403
 
     return '', 200
+
+
+@views.route('/super_secret_api_for_doing_nothing', methods=['GET'])
+def handle_echostr():
+    return request.args.get('echostr')
