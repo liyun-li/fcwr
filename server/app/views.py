@@ -168,7 +168,7 @@ def validation():
     timestamp = request.args.get('timestamp')
     signature = request.args.get('signature')
     nonce = request.args.get('nonce')
-    token = getenv('token')
+    token = getenv('TOKEN')
 
     if not timestamp or not signature or not nonce or not token:
         return '', 403
@@ -186,7 +186,7 @@ def validation():
 
     hashed = m.digest().hex()
 
-    print(hashed == signature)
+    # print(hashed == signature)
 
     if hashed != signature:
         return '', 403
