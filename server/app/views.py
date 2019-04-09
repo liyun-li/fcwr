@@ -168,14 +168,10 @@ def validation():
     timestamp = request.args.get('timestamp')
     signature = request.args.get('signature')
     nonce = request.args.get('nonce')
-    token = getenv('token')
+    token = getenv('TOKEN')
 
     if not timestamp or not signature or not nonce or not token:
         return '', 403
-
-    # print(timestamp)
-    # print(signature)
-    # print(nonce)
 
     tmp_arr = [str(timestamp), str(nonce), str(token)]
     tmp_arr.sort()
@@ -183,7 +179,10 @@ def validation():
 
     m = hashlib.sha1()
     m.update(tmp_str.encode())
-    if not m.digest().hex() == signature:
+
+    hashed = m.digest().hex()
+
+    if hashed != signature:
         return '', 403
 
     xml = xmltodict.parse(request.data).get('xml')
@@ -194,7 +193,7 @@ def validation():
     open_id = xml.get('FromUserName')
     message = xml.get('Content')
 
-    if not open_id or message.lower() != 'fcwr':
+    if not open_id or message.lower().strip() != 'fcwr':
         return '', 403
 
     wechat_id = WeChatId(open_id=open_id)
@@ -210,9 +209,9 @@ def validation():
         <FromUserName><![CDATA[{fromUser}]]></FromUserName>
         <CreateTime>{now}</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
-        <Content><![CDATA[Hi]]></Content>
+        <Content><![CDATA[https://mp.zhiclasses.com?open_id={toUser}]]></Content>
     </xml>
-    '''.format(toUser=open_id, fromUser=me, now=time())
+    '''.format(toUser=open_id, fromUser=me, now=time()).strip()
 
     return success_msg, 200
 
