@@ -194,7 +194,12 @@ def validation():
     open_id = xml.get('FromUserName')
     message = xml.get('Content')
 
-    if not open_id or message.lower() != 'fcwr':
+    print(xml)
+    print(message)
+    print(xml.get('ToUserName'))
+    print(open_id)
+
+    if not open_id or message.lower().strip() != 'fcwr':
         return '', 403
 
     wechat_id = WeChatId(open_id=open_id)
@@ -212,7 +217,7 @@ def validation():
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[Hi]]></Content>
     </xml>
-    '''.format(toUser=open_id, fromUser=me, now=time())
+    '''.format(toUser=open_id, fromUser=me, now=time()).strip()
 
     return success_msg, 200
 
