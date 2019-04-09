@@ -201,7 +201,17 @@ def validation():
     if not safer_commit():
         return '', 500
 
-    return '', 200
+    success_msg = '''
+    <xml>
+        <ToUserName><![CDATA[toUser]]></ToUserName>
+        <FromUserName><![CDATA[fromUser]]></FromUserName>
+        <CreateTime>12345678</CreateTime>
+        <MsgType><![CDATA[text]]></MsgType>
+        <Content><![CDATA[Hi]]></Content>
+    </xml>
+    '''
+
+    return success_msg, 200
 
 
 @views.route('/super_secret_api_for_doing_nothing', methods=['GET'])
