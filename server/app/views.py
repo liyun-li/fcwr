@@ -188,13 +188,16 @@ def validation():
 
     xml = xmltodict.parse(request.data).get('xml')
 
+    print(xml)
+    print(request.data)
+    print(request.form)
+
     if not xml:
         return '', 403
 
     open_id = xml.get('FromUserName')
     message = xml.get('Content')
 
-    print(xml)
     print(message)
     print(xml.get('ToUserName'))
     print(open_id)
