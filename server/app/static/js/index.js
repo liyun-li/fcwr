@@ -1,5 +1,5 @@
 $('#waitlist').ready(() => {
-	const socket = io.connect('http://' + document.domain + ':' + location.port);
+	const socket = io.connect(`${location.protocol}//${document.domain}:${location.port}`);
 	socket.on('connect', () => {
 		socket.emit('get_queue', {});
 	});
@@ -8,9 +8,10 @@ $('#waitlist').ready(() => {
 			$('#waitlist').text(`#${data.queue}`);
 		}
 	});
+});
 
+$('#reload').ready(() => {
 	$('#reload').click(() => location.reload());
-
 	//setInterval(() => location.reload(), 10000);
 });
 
