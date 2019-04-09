@@ -183,7 +183,12 @@ def validation():
 
     m = hashlib.sha1()
     m.update(tmp_str.encode())
-    if not m.digest().hex() == signature:
+
+    hashed = m.digest().hex()
+
+    print(hashed == signature)
+
+    if hashed != signature:
         return '', 403
 
     xml = xmltodict.parse(request.data).get('xml')
