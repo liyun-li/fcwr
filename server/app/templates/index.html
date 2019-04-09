@@ -27,10 +27,8 @@
 <div id="gender-preference" class="text-center">
 	<div id="gender">
         <h2>你的性别</h2>
-            {{ icon('Female_Icon_2.png', 'gender-f') }}
-            {{ icon('Male_Icon_2.png', 'gender-m') }}
-		<!-- {{ icon('Female_Icon_2.png', 'gender-f') }}
-		{{ icon('Male_Icon_2.png', 'gender-m') }} -->
+        {{ icon('Female_Icon_2.png', 'gender-f') }}
+        {{ icon('Male_Icon_2.png', 'gender-m') }}
 	</div>
 	<div id="preference">
 		<h2>你的性取向</h2>
@@ -61,10 +59,10 @@
 {% elif status == 'Assigned' %}
 
 <div class="text-center">
-	<h3>Your group number is:</h3>
+	<h3>匹配成功,微信面对面建群号码为</h3>
 	<h1 id="group_id">{{ group_id }}</h1>
 	<button type="button" id="rematch" class="btn btn-primary">
-		Rematch
+        重新匹配
 	</button>
 </div>
 
