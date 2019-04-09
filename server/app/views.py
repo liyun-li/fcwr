@@ -173,10 +173,6 @@ def validation():
     if not timestamp or not signature or not nonce or not token:
         return '', 403
 
-    # print(timestamp)
-    # print(signature)
-    # print(nonce)
-
     tmp_arr = [str(timestamp), str(nonce), str(token)]
     tmp_arr.sort()
     tmp_str = ''.join(tmp_arr)
@@ -186,26 +182,16 @@ def validation():
 
     hashed = m.digest().hex()
 
-    # print(hashed == signature)
-
     if hashed != signature:
         return '', 403
 
     xml = xmltodict.parse(request.data).get('xml')
-
-    print(xml)
-    print(request.data)
-    print(request.form)
 
     if not xml:
         return '', 403
 
     open_id = xml.get('FromUserName')
     message = xml.get('Content')
-
-    print(message)
-    print(xml.get('ToUserName'))
-    print(open_id)
 
     if not open_id or message.lower().strip() != 'fcwr':
         return '', 403
@@ -223,7 +209,7 @@ def validation():
         <FromUserName><![CDATA[{fromUser}]]></FromUserName>
         <CreateTime>{now}</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
-        <Content><![CDATA[Hi]]></Content>
+        <Content><![CDATA[https://mp.zhiclasses.com?open_id={toUser}]]></Content>
     </xml>
     '''.format(toUser=open_id, fromUser=me, now=time()).strip()
 
