@@ -193,7 +193,7 @@ def validation():
     open_id = xml.get('FromUserName')
     message = xml.get('Content')
 
-    if not open_id or not message == '参加':
+    if not open_id or message.lower() != 'fcwr':
         return '', 403
 
     wechat_id = WeChatId(open_id=open_id)
