@@ -4,6 +4,7 @@ from app.models import db, User, Group, Matched, WeChatId, UserStatus
 from app.utils import safer_commit, get_user, set_status, validate_user
 from os import getenv
 from json import dumps
+from time import time
 import xmltodict
 import hashlib
 
@@ -201,15 +202,17 @@ def validation():
     if not safer_commit():
         return '', 500
 
+    me = xml.get('ToUserName')
+
     success_msg = '''
     <xml>
-        <ToUserName><![CDATA[toUser]]></ToUserName>
-        <FromUserName><![CDATA[fromUser]]></FromUserName>
-        <CreateTime>12345678</CreateTime>
+        <ToUserName><![CDATA[{toUser}]]></ToUserName>
+        <FromUserName><![CDATA[{fromUser}]]></FromUserName>
+        <CreateTime>{now}</CreateTime>
         <MsgType><![CDATA[text]]></MsgType>
         <Content><![CDATA[Hi]]></Content>
     </xml>
-    '''
+    '''.format(toUser=open_id, fromUser=me, now=time())
 
     return success_msg, 200
 
