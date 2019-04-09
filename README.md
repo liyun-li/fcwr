@@ -17,7 +17,7 @@ To deploy in debug mode:
 pip install -r requirements.txt
 cd server
 echo DEVELOPMENT_MODE=yes > .env
-FLASK_MODE=1 python serve.py
+python serve.py
 ```
 
 Or use Docker Compose:
