@@ -191,7 +191,7 @@ def validation():
         return '', 403
 
     open_id = xml.get('FromUserName')
-    message = xml.get('Content')
+    message = xml.get('Content') or ''
 
     if not open_id or message.lower().strip() != 'fcwr':
         return '', 403
