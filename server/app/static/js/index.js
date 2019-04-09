@@ -1,5 +1,5 @@
 $('#waitlist').ready(() => {
-	const socket = io.connect('http://' + document.domain + ':' + location.port);
+	const socket = io.connect('https://' + document.domain + ':' + location.port);
 	socket.on('connect', () => {
 		socket.emit('get_queue', {});
 	});
@@ -9,11 +9,12 @@ $('#waitlist').ready(() => {
 		}
 	});
 
-	$('#reload').click(() => location.reload());
-
-	//setInterval(() => location.reload(), 10000);
 });
 
+$('#reload').ready(() => {
+	$('#reload').click(() => location.reload());
+	//setInterval(() => location.reload(), 10000);
+});
 
 $('#rematch').ready(() => {
 	$('#rematch').click(() => {
