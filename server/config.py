@@ -3,9 +3,6 @@ from pathlib import Path
 from redis import Redis
 from os import getenv
 
-load_dotenv(verbose=True)
-
-
 class Config:
     # database variables
     dbuser = getenv('DB_USER')
@@ -32,8 +29,8 @@ class Config:
     # session
     # https://pythonhosted.org/Flask-Session/
     # 'filesystem' is an alternative if you don't want to use Redis
-    SESSION_TYPE = 'redis'
-    SESSION_REDIS = Redis(host='fcwr_cache', port=6379)
+    SESSION_TYPE = 'filesystem'
+    SESSION_FILE_DIR = '/tmp/'
 
     SECRET_KEY = '823rFF43j2f 0u4mc-r0329ASDcu'
 
@@ -46,4 +43,4 @@ class Config:
     # Debug mode
     DEBUG = True
 
-    WECHAT_TOKEN = getenv('token')
+    WECHAT_TOKEN = getenv('TOKEN')
