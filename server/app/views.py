@@ -196,10 +196,12 @@ def validation():
     if not open_id or message.lower().strip() != 'fcwr':
         return '', 403
 
-    wechat_id = WeChatId(open_id=open_id)
-    db.session.add(wechat_id)
-    if not safer_commit():
-        return '', 500
+    wechat_id = validate_user(open_id)
+    if not wechat_id:
+        wechat_id = WeChatId(open_id=open_id)
+        db.session.add(wechat_id)
+        if not safer_commit():
+            return '', 500
 
     me = xml.get('ToUserName')
 
