@@ -3,6 +3,7 @@ from pathlib import Path
 from redis import Redis
 from os import getenv
 
+
 class Config:
     # database variables
     dbuser = getenv('DB_USER')
@@ -41,6 +42,6 @@ class Config:
     TEMPLATES_AUTO_RELOAD = True
 
     # Debug mode
-    DEBUG = True
+    DEBUG = False
 
     WECHAT_TOKEN = getenv('TOKEN')
