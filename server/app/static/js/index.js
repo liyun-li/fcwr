@@ -10,8 +10,9 @@ $('#waitlist').ready(() => {
 	});
 });
 
-$('#reload').on('load', () => {
-	$('#reload').click(() => location.reload());
+$('#reload').click(() => location.reload());
+
+$('#reload').load(() => {
 	setInterval(() => location.reload(), 10000);
 });
 
