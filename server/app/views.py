@@ -23,9 +23,9 @@ def index():
         return render_template('index.html', error=error)
 
     open_id = request_open_id
-    # if not validate_user(open_id):
-    # error = 'You must view this page with WeChat.'
-    # return render_template('index.html', error=error)
+    if not validate_user(open_id):
+        error = 'You must view this page with WeChat.'
+        return render_template('index.html', error=error)
 
     if not request_open_id:
         open_id = session_open_id
@@ -73,8 +73,8 @@ def tutorial():
 def rematch():
     open_id = session.get('open_id')
 
-    # if not validate_user(open_id):
-    # return 'You must open this page with WeChat', 403
+    if not validate_user(open_id):
+        return 'You must open this page with WeChat', 403
 
     user = get_user(open_id)
 
@@ -137,8 +137,8 @@ def set_preference():
     preference = data.get('preference')
     open_id = session.get('open_id') or request.args.get('open_id')
 
-    # if not validate_user(open_id):
-    # return 'You must view this page with WeChat', 403
+    if not validate_user(open_id):
+        return 'You must view this page with WeChat', 403
 
     if open_id and gender and preference and \
             gender in genders and preference in genders:
