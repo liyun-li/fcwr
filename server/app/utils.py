@@ -40,7 +40,7 @@ def set_status(user):
     waiting = User.query.filter_by(
         preference=gender, gender=preference,
         status=UserStatus.Waiting
-    ).order_by(User.id).all()
+    ).order_by(User.queue).all()
 
     # get the ones that are already matched once before
     # and don't match them again
