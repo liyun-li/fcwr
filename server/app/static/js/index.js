@@ -12,9 +12,9 @@ $('#waitlist').ready(() => {
 
 $('#reload').click(() => location.reload());
 
-$('#reload').load(() => {
-	setInterval(() => location.reload(), 10000);
-});
+//$('#reload').load(() => {
+	//setInterval(() => location.reload(), 10000);
+//});
 
 
 $('#rematch').ready(() => {

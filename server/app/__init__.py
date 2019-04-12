@@ -15,8 +15,6 @@ def create_app():
     # initialize database
     db.init_app(app)
     with app.app_context():
-        if app.config['DEBUG']:
-            db.drop_all()
         db.create_all()
     app.db = db
 
